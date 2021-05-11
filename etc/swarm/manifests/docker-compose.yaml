@@ -1,1 +1,7 @@
-# Esto es un fichero
+# Esto es un fichero para despliegue continuo en docker-swarm
+services:
+  anagrams:
+    image: manumim/ibm-anagrams:latest
+    volumes:
+      - /tmp/ibm-anagrams/data:/data:ro
+version: '3.8'
