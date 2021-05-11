@@ -12,6 +12,6 @@ jobs:
           git clone https://github.com/mmimbrero/ibm-anagrams
           docker build --tag ibm-anagrams:test ibm-anagrams/
           docker run --name prueba --volume ${PWD}/ibm-anagrams/data:/data ibm-anagrams:test
-          while true; do
+          while true; do sleep 10
             docker logs prueba 2>& 1 | grep '{1: 0, 2: 80, 3: 805, 5: 4497, 4: 2790, 8: 4821, 7: 5759, 9: 3552, 6: 6246, 11: 1054, 10: 2082, 12: 558, 14: 140, 16: 70, 15: 90, 20: 6, 19: 14, 17: 44, 13: 250, 18: 20, 21: 8, 22: 4, 23: 0, 24: 0}' && break
           done    
