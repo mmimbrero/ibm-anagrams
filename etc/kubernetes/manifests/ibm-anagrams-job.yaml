@@ -1,0 +1,50 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ibm-anagrams-job
+spec:
+  template:
+    spec:
+      containers:
+        - 
+          image: mmimbrero/ibm-anagrams:latest
+          name: ibm-anagrams-container
+          volumeMounts: 
+            - 
+              mountPath: /data
+              name: ibm-anagrams-volume
+              readony: true
+      initContainers: 
+        -
+         command:
+          - sh
+          - '-c'
+          - 'set -x; cd /downloads; rm -f ${FILENAME}; wget ${URL}/${FILENAME}'
+        env:
+          -
+            name: FILENAME
+            valueFrom: 
+              secretKeyRef:
+                key: filename
+                name: ibm-anagrams-secret
+          -
+            name: URL
+            valueFrom: 
+              secretKeyRef:
+                key: url
+                name: ibm-anagrams-secret
+        image: busybox
+        name: ibm-anagrams-initcontainer
+        volumeMounts:
+          - 
+            mountPath: /downloads
+            name: ibm-anagrams-volume
+            readony: true
+    restartPolicy: OnFailure
+    volumes: 
+      -
+        name: ibm-anagrams-volume
+        # emptyDir: {}
+        persistentVolumeClaim: 
+          claimName: ibm-anagrams-pvc
+          readOnly: false
